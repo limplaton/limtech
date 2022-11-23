@@ -1,0 +1,15 @@
+<% unless last_message.nil? %>
+
+        <em class="last-message">
+            <% if sender.id.eql?(Current.employee.id) %>
+            <%= "You: #{last_message.content[0...6]} • #{last_message.created_at.strftime('%I:%M %p')}".truncate(40) %>
+            <% else %>
+            <%= "#{sender.first_name}: #{last_message.content[0...6]} • #{last_message.created_at.strftime('%I:%M %p')}".truncate(40) %>
+            <% end %>
+        </em>
+        <%= content_tag(:em, class:"last-message-time", 
+                    data: {
+                        time: last_message.created_at.to_i
+                    }) do %>
+        <% end %>
+<% end %>

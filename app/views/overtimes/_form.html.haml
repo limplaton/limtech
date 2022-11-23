@@ -1,0 +1,44 @@
+= form_for @overtime do |f|
+  .form-group
+    %label.control-label{:for => "name"} Name
+    %select.form-select{:name => "overtime[name]"}
+      - @employee.each do |item|
+        %option{:value => "#{item.first_name + " " + item.last_name}"}= item.first_name + " " + item.last_name
+  %div{:style => "color: red"}
+    - if @overtime.errors.include? (:name)
+      - @overtime.errors.full_messages_for(:name).each do |error_message|
+        = error_message
+        \
+  .field
+    = f.label :date, :class => "control-label"
+    = f.date_field :date, :class => "form-control"
+  %div{:style => "color: red"}
+    - if @overtime.errors.include? (:date)
+      - @overtime.errors.full_messages_for(:date).each do |error_message|
+        = error_message
+        \
+  .field
+    = f.label :hours, :class => "control-label"
+    = f.number_field :hours, :class => "form-control"
+  %div{:style => "color: red"}
+    - if @overtime.errors.include? (:hours)
+      - @overtime.errors.full_messages_for(:hours).each do |error_message|
+        = error_message
+        \
+  .field
+    = f.label :description, :class => "control-label"
+    = f.text_field :description, :class => "form-control"
+  %div{:style => "color: red"}
+    - if @overtime.errors.include? (:description)
+      - @overtime.errors.full_messages_for(:description).each do |error_message|
+        = error_message
+        \
+  .field
+    = f.label :status, :class => "control-label"
+    = f.select(:status, options_for_select(%w[New Approved Rejected], :selected => f.object.status),{}, { :class => 'form-control' })
+  .form-group
+    %label.control-label{:for => "approve"} Approve by
+    = f.select(:approve, options_for_select(%w[Limneo\ Platon Maliel\ Villalobos], :selected => f.object.approve),{}, { :class => 'form-control' })
+  .form-group
+    .col-sm-offset-2.col-sm-10.py-2
+      %input.btn.btn-success{:type => "submit", :value => "Save"}

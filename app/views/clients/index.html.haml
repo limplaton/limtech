@@ -1,0 +1,62 @@
+.page-header
+  .row.align-items-center
+    .col
+      %h1.page-title Clients
+      %ul.breadcrumb
+        %li.breadcrumb-item
+          %a{:href => "dashboard"} Dashboard
+        %li.breadcrumb-item.active Clients
+    .col-auto.float-end.ms-auto
+      %div= link_to "Add Client", new_client_path, class: "btn btn-primary", data: { turbo_frame: "remote_modal" }
+
+= form_with(url: clients_path, method: "GET") do |form|
+  .row.filter-row
+    .col-sm-6.col-md-3
+      .form-group.form-focus
+        = form.text_field :query, :class => "form-control floating", :placeholder => "Client ID"
+    .col-sm-6.col-md-3
+      .form-group.form-focus
+        = form.text_field :query1, :class => "form-control floating", :placeholder => "Client Name"
+    .col-sm-6.col-md-3
+      .form-group.custom-select
+        %select.form-select{:name => "query2"}
+          %option{:value => ""}= "Select Company"
+          - @company.each do |item|
+            %option{:value => "#{item.company_name}"}= item.company_name
+    .col-sm-6.col-md-3
+      .d-grid
+        = form.submit 'Search', name: nil, :class => "btn btn-success"
+%br
+  .row
+    .col-md-12
+      .table-responsive
+        %table.table.table-striped.table-nowrap.custom-table.mb-0.datatable
+          %thead
+            %tr
+              %th Company Name
+              %th Client ID
+              %th Contact Person
+              %th Email
+              %th.text-right Actions
+          %tbody
+            - @clients.each do |employee|
+              %tr
+                %td
+                  = employee.company_name
+                %td
+                  = employee.client_id                
+                %td
+                  = employee.firt_name + " " + employee.last_name
+                %td
+                  = employee.email
+                %td
+                  = link_to 'Edit', edit_client_path(employee), class: "btn btn-success btn-sm", data: { turbo_frame: "remote_modal" }
+                  = link_to "Delete", employee, class: "btn btn-danger btn-sm", method: :delete, data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }
+    .row
+      .col-sm-12.col-md-5
+        
+      .col-sm-12.col-md-7.py-3
+        #DataTables_Table_0_paginate.dataTables_paginate.paging_simple_numbers
+          != pagy_bootstrap_nav(@pagy)              
+
+

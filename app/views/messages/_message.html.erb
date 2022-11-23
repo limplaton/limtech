@@ -1,0 +1,20 @@
+
+<div class="cont-<%= message.employee.id %>" style="display:flex">
+
+    <img src="<%= message.employee.avatar %>" width="40" height="40" class="chat_pfp curr-<%= message.employee.id %>">
+
+    <div class="message-box msg-<%= message.employee.id %> " >
+
+        <%= render "messages/attachments", message: message %>
+
+        <div>
+            <div>
+                <%= message.content %>
+                <p class="time"><small><%= message.created_at.strftime("%I:%M %p") %></small></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

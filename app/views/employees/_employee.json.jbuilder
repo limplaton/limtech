@@ -1,0 +1,2 @@
+json.extract! employee, :id, :first_name, :last_name, :username, :email, :employee_id, :join_date, :phone, :company, :department, :designation, :holiday_read, :holiday_write, :holiday_create, :holiday_delete, :leave_read, :leave_write, :leave_create, :leave_delete, :timesheet_read, :timesheet_write, :timesheet_create, :timesheet_delete, :created_at, :updated_at
+json.url employee_url(employee, format: :json)

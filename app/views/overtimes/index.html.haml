@@ -1,0 +1,71 @@
+%h1.page-title Listing departments
+%ul.breadcrumb
+  %li.breadcrumb-item
+    %a{:href => "dashboard"} Dashboard
+  %li.breadcrumb-item.active Overtime
+  .col-auto.float-end.ms-auto
+    %div= link_to "Add Overtime", new_overtime_path, class: "btn btn-primary", data: { turbo_frame: "remote_modal" }
+.row
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Overtime Employee
+      %h4
+        = @overtime_employee
+        %span this month
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Overtime Hours
+      %h4
+        = @total
+        %span this month
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Pending Request
+      %h4
+        = @request
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Rejected
+      %h4
+        = @reject
+%br
+  .row
+    .col-md-12
+      .table-responsive
+        %table.table.table-striped.table-nowrap.custom-table.mb-0.datatable
+          %thead
+            %tr
+              %th Name
+              %th OT Date
+              %th OT Hours
+              %th OT Type
+              %th Description
+              %th Status
+              %th Approve by
+              %th.text-end Actions
+          %tbody
+            - @overtimes.each do |employee|
+              %tr{:scope => "row"}
+                %td
+                  = employee.name
+                %td
+                  = employee.date.strftime('%F')
+                %td
+                  = employee.hours
+                %td
+                  Normal day OT 1.5x
+                %td
+                  = employee.description
+                %td
+                  = employee.status
+                %td
+                  = employee.approve
+                %td.text-end
+                  = link_to 'Edit', edit_overtime_path(employee), class: "btn btn-success btn-sm", data: { turbo_frame: "remote_modal" }
+                  = link_to "Delete", employee, class: "btn btn-danger btn-sm", method: :delete, data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }
+    .row
+      .col-sm-12.col-md-5
+        
+      .col-sm-12.col-md-7.py-3
+        #DataTables_Table_0_paginate.dataTables_paginate.paging_simple_numbers
+          != pagy_bootstrap_nav(@pagy)

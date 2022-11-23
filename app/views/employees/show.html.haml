@@ -1,0 +1,75 @@
+%p#notice= notice
+
+%p
+  %b First name:
+  = @employee.first_name
+%p
+  %b Last name:
+  = @employee.last_name
+%p
+  %b Username:
+  = @employee.username
+%p
+  %b Email:
+  = @employee.email
+%p
+  %b Password:
+  = @employee.password
+%p
+  %b Employee:
+  = @employee.employee_id
+%p
+  %b Join date:
+  = @employee.join_date
+%p
+  %b Phone:
+  = @employee.phone
+%p
+  %b Company:
+  = @employee.company
+%p
+  %b Department:
+  = @employee.department
+%p
+  %b Designation:
+  = @employee.designation
+%p
+  %b Holiday read:
+  = @employee.holiday_read
+%p
+  %b Holiday write:
+  = @employee.holiday_write
+%p
+  %b Holiday create:
+  = @employee.holiday_create
+%p
+  %b Holiday delete:
+  = @employee.holiday_delete
+%p
+  %b Leave read:
+  = @employee.leave_read
+%p
+  %b Leave write:
+  = @employee.leave_write
+%p
+  %b Leave create:
+  = @employee.leave_create
+%p
+  %b Leave delete:
+  = @employee.leave_delete
+%p
+  %b Timesheet read:
+  = @employee.timesheet_read
+%p
+  %b Timesheet write:
+  = @employee.timesheet_write
+%p
+  %b Timesheet create:
+  = @employee.timesheet_create
+%p
+  %b Timesheet delete:
+  = @employee.timesheet_delete
+
+= link_to 'Edit', edit_employee_path(@employee)
+\|
+= link_to 'Back', employees_path

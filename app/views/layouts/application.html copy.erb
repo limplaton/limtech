@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lim Tech</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <%= action_cable_meta_tag %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://kit.fontawesome.com/122a40d8e2.js" crossorigin="anonymous"></script>
+    <style>
+    <%= ".msg-#{current_user&.id}" %> {
+        background-color: #007bff !important;
+        padding: 10px;
+    }
+    <%= ".cont-#{current_user&.id}" %> {
+        display: flex;
+        justify-content: flex-end
+    }
+    </style>
+</head>
+
+<body>
+    <% if flash[:success] %>
+        <%= flash[:success] %>
+    <% end %>
+    <section class="home-section">
+        <header>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <div class="home-content" class="d-flex mb-2 mb-lg-0">
+                    <i class='bx bx-menu'></i>
+                </div>
+                <div id="search-bar" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <i id="search-icon" class="fas fa-search"></i>
+                    <input id="search-input" class="form-control" placeholder="Search">
+                </div> 
+                
+                <div class="dropdown">
+                    <a href="#">
+                        <img src="<%= @current_user&.avatar || "https://exoffender.org/wp-content/uploads/2016/09/empty-profile.png" %>" alt="mdo" width="40" height="40" class="rounded-circle">
+                    </a>
+                </div>
+
+                <div class="name-job">
+                    <div class="profile_name"><%= @current_user&.first_name %> <%= @current_user&.last_name %></div>
+                    <div class="job"><%= @current_user&.designation %></div>
+                </div>
+
+                <div class="name-job">
+                    <% if @current_user %>
+                    <%= link_to 'Sign Out', signout_path,  :method => :delete %>
+                    <% end %>
+                </div>
+            </div>
+        </header>
+    </section>
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="logo-details">
+                <i class='bx bx-leaf' style='color:#f9fffc' ></i>
+                <span class="logo_name">Lim Tech</span>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="/dashboard">
+                        <i class='bx bxs-dashboard bx-rotate-180' ></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Dashboard</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <div class="icon-link">
+                        <a href="#">
+                            <i class='bx bx-book-alt'></i>
+                            <span class="link_name">App</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Posts</a></li>
+                        <li><a href="/rooms">Chat</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <div class="icon-link">
+                        <a href="#">
+                            <i class='bx bxs-user' style='color:#f9f5f5'  ></i>
+                            <span class="link_name">Employees</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Employees</a></li>
+                        <li><a href="/employees">All Employees</a></li>
+                        <li><a href="/holidays">Holiday</a></li>
+                        <li><a href="#">Leaves (Admin)</a></li>
+                        <li><a href="#">Leaves (Employee)</a></li>
+                        <li><a href="#">Leave Setting</a></li>
+                        <li><a href="#">Attendance (Admin)</a></li>
+                        <li><a href="#">Attendance (Employee)</a></li>
+                        <li><a href="/departments">Departments</a></li>
+                        <li><a href="/designations">Designations</a></li>
+                        <li><a href="/shifts">Shift & Schedule</a></li>
+                        <li><a href="/overtimes">Overtime</a></li> n
+                    </ul>
+                </li>
+                <li>
+                    <a href="/clients">
+                        <i class='bx bxs-business' ></i>
+                        <span class="link_name">Clients</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Clients</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <section class="home-section">
+
+
+            <div class="content">
+                <%= yield %>
+                <%= turbo_frame_tag "remote_modal", target: "_top" %>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            let arrow = document.querySelectorAll(".arrow");
+            for (var i = 0; i < arrow.length; i++) {
+                arrow[i].addEventListener("click", (e) => {
+                    let arrowParent = e.target.parentElement.parentElement;
+                    arrowParent.classList.toggle("showMenu");
+                });
+            }
+            let sidebar = document.querySelector(".sidebar");
+            let sidebarBtn = document.querySelector(".bx-menu");
+            $(function() {
+                resizeScreen();
+                $(window).resize(function() {
+                    resizeScreen();
+                });
+                $('.bx-menu').click(function() {
+                    if (document.body.clientWidth > 400) {
+                        $('.sidebar').toggleClass('close');
+                    } else {
+                        $('.sidebar').toggleClass('small-screen');
+                    }
+                });
+
+                function resizeScreen() {
+                    if (document.body.clientWidth < 400) {
+                        $('.sidebar').addClass('close');
+                    } else {
+                        $('.sidebar').removeClass('close');
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        function fileChange() {
+
+            var file = document.getElementById('img_upload');
+            var form = new FormData();
+            form.append("image", file.files[0])
+            var images = [];
+
+            var settings = {
+                "url": "https://api.imgbb.com/1/upload?key=954d4bd468e0cffb9058adbd64f0cdc5",
+                "method": "POST",
+                "timeout": 0,
+                "processData": false,
+                "mimeType": "multipart/form-data",
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings).done(function (response) {
+                var jx = JSON.parse(response);
+                console.log(jx.data.url)
+                $("input[name='employee[avatar]']").val(jx.data.url);
+            });
+        }
+    </script>
+</body>
+</html>

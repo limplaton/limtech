@@ -1,0 +1,155 @@
+= form_for @employee do |f|
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :first_name, :class => "control-label"
+      = f.text_field :first_name, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:first_name)
+          - employee.errors.full_messages_for(:first_name).each do |error_message|
+            = error_message
+            \
+    .field.form-group.col-6
+      = f.label :last_name, :class => "control-label"
+      = f.text_field :last_name, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:last_name)
+          - employee.errors.full_messages_for(:last_name).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :username, :class => "control-label"
+      = f.text_field :username, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:username)
+          - employee.errors.full_messages_for(:username).each do |error_message|
+            = error_message
+            \
+    .field.form-group.col-6
+      = f.label :email, :class => "control-label"
+      = f.text_field :email, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:email)
+          - employee.errors.full_messages_for(:email).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :password, :class => "control-label"
+      = f.password_field :password, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:password)
+          = employee.errors.full_messages_for(:password).first
+    .field.form-group.col-6
+      = f.label :password_confirmation, :class => "control-label"
+      = f.password_field :password_confirmation, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:password_confirmation)
+          - employee.errors.full_messages_for(:password_confirmation).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :employee_id, :class => "control-label" 
+      = f.text_field :employee_id, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:employee_id)
+          - employee.errors.full_messages_for(:employee_id).each do |error_message|
+            = error_message
+            \
+    .field.form-group.col-6
+      = f.label :join_date, :class => "control-label"
+      = f.date_field :join_date, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:join_date)
+          - employee.errors.full_messages_for(:join_date).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :phone, :class => "control-label"
+      = f.text_field :phone, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:phone)
+          - employee.errors.full_messages_for(:phone).each do |error_message|
+            = error_message
+            \
+    .field.form-group.col-6
+      = f.label :company, :class => "control-label"
+      = f.text_field :company, :class => "form-control"
+      %div{:style => "color: red"}
+        - if employee.errors.include? (:company)
+          - employee.errors.full_messages_for(:company).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :department, :class => "control-label"
+      %select.form-select{:name => "employee[department]"}
+        - @departments.each do |item|
+          %option{:value => "#{item.name}"}= item.name
+    .field.form-group.col-6
+      = f.label :designation, :class => "control-label"
+      %select.form-select{:name => "employee[designation]"}
+        - @designations.each do |item|
+          %option{:value => "#{item.name}"}= item.name
+  .form-group.row
+    .field.form-group.col-12
+      = f.label :avatar, "Avatar", :class => "control-label"
+      %input{:name => "employee[avatar]", :type => "hidden", :value => ""}
+      %input#img_upload{:accept => ".png, .jpg, .jpeg", :multiple => "multiple", :name => "product_img_file", :onchange => "fileChange()", :type => "file", :class => "form-control"}/
+  .table-responsive.m-t-15
+  %table.table.table-striped.custom-table
+    %thead
+      %tr
+        %th Module Permission
+        %th.text-center Read
+        %th.text-center Write
+        %th.text-center Create
+        %th.text-center Delete
+    %tbodys
+      %tr  
+        %td Holidays
+        %td.text-center
+          .field
+            = f.check_box :holiday_read
+        %td.text-center
+          .field
+            = f.check_box :holiday_write
+        %td.text-center
+          .field
+            = f.check_box :holiday_create
+        %td.text-center
+          .field
+            = f.check_box :holiday_delete
+      %tr
+        %td Leaves
+        %td.text-center
+          .field
+            = f.check_box :leave_read
+        %td.text-center
+          .field
+            = f.check_box :leave_write
+        %td.text-center
+          .field
+            = f.check_box :leave_create
+        %td.text-center
+          .field
+            = f.check_box :leave_delete
+      %tr
+        %td Timing Sheets
+        %td.text-center
+          .field
+            = f.check_box :timesheet_read
+        %td.text-center
+          .field
+            = f.check_box :timesheet_write
+        %td.text-center
+          .field
+            = f.check_box :timesheet_create
+        %td.text-center
+          .field
+            = f.check_box :timesheet_delete
+  .form-group
+    .col-sm-offset-2.col-sm-10.py-2
+      %input.btn.btn-success{:type => "submit", :value => "Save"}

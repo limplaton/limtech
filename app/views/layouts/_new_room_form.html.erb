@@ -1,0 +1,7 @@
+<% if current_user.admin? %>
+    <%= form_with(model: @room, remote: true, class: "menu-title", 
+        data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
+        <%= f.text_field :name, class: "new-room-input", autocomplete: 'off' %>
+        <%= f.submit ' ➕ ', data: { disable_with: false } %>
+    <% end %>
+<% end %>

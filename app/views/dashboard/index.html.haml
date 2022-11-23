@@ -1,0 +1,50 @@
+%h1.page-title
+  = "Welcome " + @current_user.first_name
+%ul.breadcrumb
+  %li.breadcrumb-item.active
+  .col-auto.float-end.ms-auto
+.row
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Projects
+      %h4
+        0
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Task
+      %h4
+        0
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Clients
+      %h4
+        = @clients.count
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Employees
+      %h4
+        = @employees.count
+.row
+  .col-md-6.col-sm-6.col-lg-6.col-xl-6.overtime1
+    .stats-info
+      %h6 Clients
+      %h4
+        = line_chart Client.group_by_day(:created_at).count
+  .col-md-6.col-sm-6.col-lg-6.col-xl-6.overtime1
+    .stats-info
+      %h6 Employees
+      %h4
+        = line_chart Employee.group_by_day(:created_at).count
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Designations
+      %h4
+        = pie_chart Employee.group(:designation).count
+  .col-md-6.col-sm-6.col-lg-6.col-xl-3.overtime1
+    .stats-info
+      %h6 Department
+      %h4
+        = pie_chart Designation.group(:department).count
+  
+
+%br

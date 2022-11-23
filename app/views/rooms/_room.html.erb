@@ -1,0 +1,35 @@
+<% if room.id.eql?(current_user.current_room) %>
+    <% isActive = 'active' %>
+<% else %>
+    <% isActive = '' %>
+<% end %>
+
+<div class="room">
+    <span class="chat-avatar-sm user-img">
+        <img class="rounded-circle" alt="" src="https://limmy.sgp1.digitaloceanspaces.com/user.jpg">
+    </span>    
+    <li class="room_list_item <% isActive %>">
+
+        <div class="room-name-notification-block">
+
+            <%= turbo_frame_tag dom_id(room) do %>
+                <a data-turbo="false" href="/rooms/<%= room.id %>" class="sidechat" style="width: 105px;margin-right: 0;display: inline-block;padding: 8px 0px 0px 0px;">
+                    <span class="chat-user"> <%= room.name %></span>
+                </a>
+            <% end %>
+            
+            <%= render 'rooms/notifications', room: room %>
+
+            <a data-turbo="false" rel="nofollow" data-method="delete" href="/rooms/leave/<%= room.id %>" class="leavegroup" style="width: 30px;margin-right: 0;display: inline-block;padding: 0px;">
+                <i class="bi bi-dash-square room-leave-link-icon"></i>
+            </a>
+        </div>
+
+        <%= turbo_frame_tag [dom_id(room), "last_message"] do %>
+            <%= render "rooms/last_message", 
+                room: room, 
+                employee: employee, 
+                last_message: last_message %>
+        <% end %>
+    </li>
+</div>

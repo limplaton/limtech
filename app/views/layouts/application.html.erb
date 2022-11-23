@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lim Tech</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <%= action_cable_meta_tag %>
+    <%= yield :head %>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css" integrity="sha512-vebUliqxrVkBy3gucMhClmyQP9On/HAWQdKDXRaAlb/FKuTbxkjPKUyqVOxAcGwFDka79eTF+YXwfke1h3/wfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style>
+    <%= ".msg-#{current_user&.id}" %> {
+        background-color: #007bff !important;
+        padding: 10px;
+    }
+    <%= ".cont-#{current_user&.id}" %> {
+        display: flex;
+        justify-content: flex-end;
+        text-align: right
+    }
+    <%= ".chat_pfp.curr-#{current_user&.id}" %> {
+        display: none
+    }
+
+    </style>
+</head>
+
+<body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Header -->
+        <div class="header">
+        
+            <!-- Logo -->
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <img src="https://i.ibb.co/DDZ0xS7/logo-lim.png" width="50" height="50" alt="">
+                </a>
+            </div>
+            <!-- /Logo -->
+            
+            <a id="toggle_btn" href="javascript:void(0);">
+                <span class="bar-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </a>
+            
+            <!-- Header Title -->
+            <div class="page-title-box">
+                <h3>Limmy</h3>
+            </div>
+            <!-- /Header Title -->
+            
+            <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
+            
+            <!-- Header Menu -->
+            <ul class="nav user-menu">
+            
+                <!-- Search -->
+                <li class="nav-item">
+                    <div class="top-nav-search">
+                        <a href="javascript:void(0);" class="responsive-search">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        <form action="#">
+                            <input class="form-control" type="text" placeholder="Search here">
+                            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </li>
+                <!-- /Search -->
+            
+                <!-- Flag -->
+                <li class="nav-item dropdown has-arrow flag-nav">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                        <img src="https://limmy.sgp1.digitaloceanspaces.com/us.png" alt="" height="20"> <span>English</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="javascript:void(0);" class="dropdown-item">
+                            <img src="https://limmy.sgp1.digitaloceanspaces.com/us.png" alt="" height="16"> English
+                        </a>
+                    </div>
+                </li>
+                <!-- /Flag -->
+            
+                <!-- Notifications -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i><span class="badge badge-pill">3</span>
+                    </a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span class="notification-title">Notifications</span>
+                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+                        </div>
+                        <div class="noti-content">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img src="<%= @current_user&.avatar || "https://exoffender.org/wp-content/uploads/2016/09/empty-profile.png" %>">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
+                                                <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="#">View all Notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- /Notifications -->
+                
+                <!-- Message Notifications -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                        <i class="fa fa-comment-o"></i> <span class="badge badge-pill">8</span>
+                    </a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span class="notification-title">Messages</span>
+                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+                        </div>
+                        <div class="noti-content">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="list-item">
+                                            <div class="list-left">
+                                                <span class="avatar">
+                                                    <img src="<%= @current_user&.avatar || "https://exoffender.org/wp-content/uploads/2016/09/empty-profile.png" %>">
+                                                </span>
+                                            </div>
+                                            <div class="list-body">
+                                                <span class="message-author">Richard Miles </span>
+                                                <span class="message-time">12:28 AM</span>
+                                                <div class="clearfix"></div>
+                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="#">View all Messages</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- /Message Notifications -->
+
+                <li class="nav-item dropdown has-arrow main-drop">
+                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                        <span class="user-img"><img src="<%= @current_user&.avatar || "https://exoffender.org/wp-content/uploads/2016/09/empty-profile.png" %>">
+                        <span class="status online"></span></span>
+                        <span>Admin</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">My Profile</a>
+                        <a class="dropdown-item" href="settings.html">Settings</a>
+                        <% if @current_user %>
+                            <%= link_to 'Sign Out', signout_path, class: "dropdown-item",  :method => :delete %>
+                        <% end %>
+                    </div>
+                </li>
+            </ul>
+            <!-- /Header Menu -->
+            
+            <!-- Mobile Menu -->
+            <div class="dropdown mobile-user-menu">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#">My Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <% if @current_user %>
+                        <%= link_to 'Sign Out', signout_path, class: "dropdown-item",  :method => :delete %>
+                    <% end %>
+                </div>
+            </div>
+            <!-- /Mobile Menu -->
+            
+        </div>
+        <!-- /Header -->
+
+        <% if !@chatroom %>
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+
+                    <ul>
+                        <li class="menu-title"> 
+                            <span>Main</span>
+                        </li>
+                        
+                        <li class="submenu">
+                            <a href="#"><i class="la la-dashboard arrow"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a class="" href="/dashboard">Admin Dashboard</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a class="" href="/rooms">Chat</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="menu-title"> 
+                            <span>Employees</span>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="/employees">All Employees</a></li>
+                                <li><a href="/holidays">Holiday</a></li>
+                                <li><a href="#">Leaves (Admin)</a></li>
+                                <li><a href="#">Leaves (Employee)</a></li>
+                                <li><a href="#">Leave Setting</a></li>
+                                <li><a href="#">Attendance (Admin)</a></li>
+                                <li><a href="#">Attendance (Employee)</a></li>
+                                <li><a href="/departments">Departments</a></li>
+                                <li><a href="/designations">Designations</a></li>
+                                <li><a href="#">Shift & Schedule</a></li>
+                                <li><a href="/overtimes">Overtime</a></li>
+                            </ul>
+                        </li>
+
+                        <li> 
+                            <a href="clients"><i class="la la-users"></i> <span>Clients</span></a>
+                        </li>
+                        <li> 
+                            <a href="leads.html"><i class="la la-user-secret"></i> <span>Leads</span></a>
+                        </li>
+                        <li> 
+                            <a href="settings.html"><i class="la la-cog"></i> <span>Settings</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="la la-key"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="login.html"> Login </a></li>
+                                <li><a href="register.html"> Register </a></li>
+                                <li><a href="forgot-password.html"> Forgot Password </a></li>
+                            </ul>
+                        </li>		
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Sidebar -->
+        <% end %>
+
+        <!-- Page Wrapper -->
+        <div class="page-wrapper">
+            <% if !@chatroom %>
+            <!-- Page Content -->
+            <div class="content container-fluid">
+                <%= yield %>
+                <%= turbo_frame_tag "remote_modal", target: "_top" %>
+            </div>
+            <!-- /Page Content -->
+            <% else %>
+                <%= yield %>
+            <% end %>
+        </div>
+        <!-- /Page Wrapper --> 
+
+    </div>
+    <!-- /Main Wrapper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/f98ec32b38.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script>
+        function fileChange() {
+
+            var file = document.getElementById('img_upload');
+            var form = new FormData();
+            form.append("image", file.files[0])
+            var images = [];
+
+            var settings = {
+                "url": "https://api.imgbb.com/1/upload?key=954d4bd468e0cffb9058adbd64f0cdc5",
+                "method": "POST",
+                "timeout": 0,
+                "processData": false,
+                "mimeType": "multipart/form-data",
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings).done(function (response) {
+                var jx = JSON.parse(response);
+                console.log(jx.data.url)
+                $("input[name='employee[avatar]']").val(jx.data.url);
+            });
+        }
+    </script>
+</body>
+</html>

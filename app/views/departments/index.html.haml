@@ -1,0 +1,33 @@
+%h1.page-title Listing Departments
+%ul.breadcrumb
+  %li.breadcrumb-item
+    %a{:href => "dashboard"} Dashboard
+  %li.breadcrumb-item.active Department
+  .col-auto.float-end.ms-auto
+    %div= link_to "New department", new_department_path, class: "btn btn-primary", data: { turbo_frame: "remote_modal" }
+%br
+  .row
+    .col-md-12
+      .table-responsive
+        %table.table.table-striped.table-nowrap.custom-table.mb-0.datatable
+          %thead
+            %tr
+              %th #
+              %th Department Name
+              %th.text-end Actions
+          %tbody
+            - @departments.each do |item|
+              %tr{:scope => "row"}
+                %td
+                  = @count += 1
+                %td
+                  = item.name
+                %td.text-end
+                  = link_to "Edit", edit_department_path(item), class: "btn btn-success btn-sm", data: { turbo_frame: "remote_modal" }
+                  = link_to "Delete", item, class: "btn btn-danger btn-sm", method: :delete, data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }
+    .row
+      .col-sm-12.col-md-5
+        
+      .col-sm-12.col-md-7.py-3
+        #DataTables_Table_0_paginate.dataTables_paginate.paging_simple_numbers
+          != pagy_bootstrap_nav(@pagy)

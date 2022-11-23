@@ -1,0 +1,78 @@
+%p#notice= notice
+
+%p
+  %b First name:
+  = @client.first_name
+%p
+  %b Last name:
+  = @client.last_name
+%p
+  %b Username:
+  = @client.username
+%p
+  %b Email:
+  = @client.email
+%p
+  %b Password:
+  = @client.password
+%p
+  %b Client:
+  = @client.client_id
+%p
+  %b Phone:
+  = @client.phone
+%p
+  %b Company name:
+  = @client.company_name
+%p
+  %b Project read:
+  = @client.project_read
+%p
+  %b Project write:
+  = @client.project_write
+%p
+  %b Project create:
+  = @client.project_create
+%p
+  %b Project delete:
+  = @client.project_delete
+%p
+  %b Task read:
+  = @client.task_read
+%p
+  %b Task write:
+  = @client.task_write
+%p
+  %b Task create:
+  = @client.task_create
+%p
+  %b Task delete:
+  = @client.task_delete
+%p
+  %b Chat read:
+  = @client.chat_read
+%p
+  %b Chat write:
+  = @client.chat_write
+%p
+  %b Chat create:
+  = @client.chat_create
+%p
+  %b Chat delete:
+  = @client.chat_delete
+%p
+  %b Timing sheet read:
+  = @client.timing_sheet_read
+%p
+  %b Timing sheet write:
+  = @client.timing_sheet_write
+%p
+  %b Timing sheet create:
+  = @client.timing_sheet_create
+%p
+  %b Timing sheet delete:
+  = @client.timing_sheet_delete
+
+= link_to 'Edit', edit_client_path(@client)
+\|
+= link_to 'Back', clients_path

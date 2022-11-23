@@ -1,0 +1,41 @@
+
+<% content_for :middle_column do %>
+<%
+=begin%>
+ 
+    <%= form_for (:session), :class => 'card card-body' do |f| %>
+        <%= f.label :username, 'Enter your username' %>
+        <%= f.text_field :username, autocomplete: 'off' %>
+        <%= f.submit 'Sign in' %>
+    <% end %> 
+<%
+=end%>
+    <form class="card card-body" action="/sessions/new" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <a href="/sessions/new" class="mx-auto"><img class src="https://i.ibb.co/DDZ0xS7/logo-lim.png" alt="" width="150" height="150"></a>
+        <% if flash[:messages] %>
+        <ul>
+            <li style="color:red" class="py-1"><%= flash[:messages] %></li>
+        </ul>
+        <% end %>
+        <h3>Login</h3>
+        <div class="form-group">
+            <label for="username"><strong>Username</strong></label>
+            <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password"><strong>Password</strong></label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <div class="form-group p-2 px-0 text-end">
+            <input type='submit' class="btn btn-primary" value='Login' />
+        </div>
+    </form>
+    <div class="py-3">
+        <%
+=begin%>
+ <a href="/users/new"><h5>Not yet a member? Register</h5></a> 
+<%
+=end%>
+    <div>
+<% end %>

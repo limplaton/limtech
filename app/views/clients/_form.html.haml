@@ -1,0 +1,122 @@
+= form_for @client do |f|
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :firt_name, :class => "control-label"
+      = f.text_field :firt_name, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:firt_name)
+          - @client.errors.full_messages_for(:firt_name).each do |error_message|
+            = error_message
+            \
+    .field.form-group.col-6
+      = f.label :last_name, :class => "control-label"
+      = f.text_field :last_name, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:last_name)
+          - @client.errors.full_messages_for(:last_name).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :username, :class => "control-label"
+      = f.text_field :username, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:username)
+          - @client.errors.full_messages_for(:username).each do |error_message|
+            = error_message
+            \
+    .field.form-group.col-6
+      = f.label :email, :class => "control-label"
+      = f.text_field :email, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:email)
+          - @client.errors.full_messages_for(:email).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :password, :class => "control-label"
+      = f.text_field :password, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:password)
+          = @client.errors.full_messages_for(:password).first
+    .field.form-group.col-6
+      = f.label :password_confirmation, :class => "control-label"
+      = f.text_field :password_confirmation, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:password_confirmation)
+          - @client.errors.full_messages_for(:password_confirmation).each do |error_message|
+            = error_message
+            \
+  .form-group.row
+    .field.form-group.col-6
+      = f.label :client_id, :class => "control-label" 
+      = f.text_field :client_id, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:client_id)
+          - @client.errors.full_messages_for(:client_id).each do |error_message|
+            = error_message
+            \
+    .field.form-group.col-6
+      = f.label :company_name, :class => "control-label"
+      = f.text_field :company_name, :class => "form-control"
+      %div{:style => "color: red"}
+        - if @client.errors.include? (:company_name)
+          - @client.errors.full_messages_for(:company_name).each do |error_message|
+            = error_message
+            \
+  .table-responsive.m-t-15
+  %table.table.table-striped.custom-table
+    %thead
+      %tr
+        %th Module Permission
+        %th.text-center Read
+        %th.text-center Write
+        %th.text-center Create
+        %th.text-center Delete
+    %tbodys
+      %tr  
+        %td Projects
+        %td.text-center
+          .field
+            = f.check_box :project_read
+        %td.text-center
+          .field
+            = f.check_box :project_write
+        %td.text-center
+          .field
+            = f.check_box :project_create
+        %td.text-center
+          .field
+            = f.check_box :project_delete
+      %tr
+        %td Tasks
+        %td.text-center
+          .field
+            = f.check_box :task_read
+        %td.text-center
+          .field
+            = f.check_box :task_write
+        %td.text-center
+          .field
+            = f.check_box :task_create
+        %td.text-center
+          .field
+            = f.check_box :task_delete
+      %tr
+        %td Timing Sheets
+        %td.text-center
+          .field
+            = f.check_box :timing_sheet_read
+        %td.text-center
+          .field
+            = f.check_box :timing_sheet_write
+        %td.text-center
+          .field
+            = f.check_box :timing_sheet_create
+        %td.text-center
+          .field
+            = f.check_box :timing_sheet_delete
+  .form-group
+    .col-sm-offset-2.col-sm-10.py-2
+      %input.btn.btn-success{:type => "submit", :value => "Save"}

@@ -1,0 +1,10 @@
+// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "@hotwired/turbo-rails"
+import "controllers"
+import "channels"
+import "chartkick"
+import "Chart.bundle"
+import "customs/jquery.slimscroll.min"
+import "customs/app"
+import "customs/jquery.dataTables.min"
+import "customs/dataTables.bootstrap4.min"

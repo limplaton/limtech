@@ -1,0 +1,16 @@
+    <span class="chat-avatar-sm user-img">
+        <img class="rounded-circle" alt="" src="https://limmy.sgp1.digitaloceanspaces.com/user.jpg">
+    </span>
+<li id="rooms">
+    <a data-turbo="false" href="/rooms/<%= room.id %>" class="sidechat" style="width: 135px;margin-right: 0;display: inline-block;padding: 8px 0px 0px 0px;">
+        <span class="chat-user"> <%= room.name %></span>
+    </a>
+
+    <a data-turbo="false" rel="nofollow" data-method="delete" href="/rooms/leave/<%= room.id %>" class="leavegroup" style="width: 20px;margin-right: 0;display: inline-block;padding: 0px;">
+        <i class="bi bi-dash-square room-leave-link-icon"></i>
+    </a>
+
+    <%= turbo_frame_tag [dom_id(room), "last_message"] do %>
+        <%= render "rooms/last_message", room: room, employee: employee, last_message: last_message %>
+    <% end %>
+</li>

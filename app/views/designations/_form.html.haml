@@ -1,0 +1,19 @@
+= form_for @designation do |f|
+  .field.form-group
+    %label.control-label.col-sm-2{:for => "name"}= f.label :name
+    .col-sm-10.form-group
+      = f.text_field :name, :class => "form-control"
+    %div{:class => "color: red"}
+    - if designation.errors.include? (:name)
+      - designation.errors.full_messages_for(:name).each do |error_message|
+        = error_message
+        \
+  .form-group
+    %label.control-label.col-sm-2{:for => "pwd"} Department:
+    .col-sm-10
+      %select.form-select{:name => "designation[department]"}
+        - @departments.each do |item|
+          %option{:value => "#{item.name}"}= item.name
+  .form-group
+    .col-sm-offset-2.col-sm-10.py-2
+      %input.btn.btn-success.btn-sm{:type => "submit", :value => "Save"}/

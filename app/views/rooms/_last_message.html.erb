@@ -1,0 +1,9 @@
+<% unless last_message.nil? %>
+    <em class="last-message"><%= "#{last_message.employee.first_name}: #{last_message.content.length > 10 ? "#{last_message.content[0...10]}..." : last_message.content}".truncate(40) %></em>
+    <%= content_tag(:em, class:"last-message-time", 
+        data: {
+            time: last_message.created_at.to_i
+        }) do %>
+        <%= " • #{last_message.created_at.strftime('%I:%M %p')}"%>
+    <% end %>
+<% end %>

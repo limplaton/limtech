@@ -1,0 +1,2 @@
+json.extract! client, :id, :first_name, :last_name, :username, :email, :client_id, :phone, :company_name, :project_read, :project_write, :project_create, :project_delete, :task_read, :task_write, :task_create, :task_delete, :chat_read, :chat_write, :chat_create, :chat_delete, :timing_sheet_read, :timing_sheet_write, :timing_sheet_create, :timing_sheet_delete, :created_at, :updated_at
+json.url client_url(client, format: :json)

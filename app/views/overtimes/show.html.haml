@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @overtime.name
+%p
+  %b Date:
+  = @overtime.date
+%p
+  %b Hours:
+  = @overtime.hours
+%p
+  %b Description:
+  = @overtime.description
+%p
+  %b Status:
+  = @overtime.status
+%p
+  %b Approve:
+  = @overtime.approve
+
+= link_to 'Edit', edit_overtime_path(@overtime)
+\|
+= link_to 'Back', overtimes_path

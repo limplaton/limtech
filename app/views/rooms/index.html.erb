@@ -1,0 +1,365 @@
+<%= turbo_frame_tag "appearance_channel" %>
+<div id="appearance_channel"></div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="/dashboard"><i class="la la-home"></i> <span>Back to Home</span></a>
+                </li>
+                <li class="menu-title"><span>Chat Groups</span></li>
+                <li>
+                   <%= render partial: "layouts/new_room_form" %> 
+                </li>
+                    <%= render partial: "rooms/search_form" %> 
+                    <%= turbo_stream_from "rooms" %>
+                <div id="rooms" data-controller="room-list">
+                    <%= render "rooms/rooms", rooms: @joined_rooms, employee: current_user %>
+                </div>
+                <li class="menu-title">Direct Chats <a href="#" data-bs-toggle="modal" data-bs-target="#add_chat_user"><i class="fa fa-plus"></i></a></li>
+                <%= turbo_stream_from "users" %>
+                
+                <div id="users" data-controller="user-list">
+                    <%= render "employees/employees", employees: @users %>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Sidebar -->
+
+<% if @video_call %>
+
+<%= audio_tag "dial_tone.wav", class: "audio-play" %>
+<p class="btn btn-primary audioButton">Play</p>
+
+<div class="call-box outgoing-box">
+    <div class="call-wrapper">
+        <div class="call-inner">
+
+            <div class="call-user">
+                <img alt="" src="<%= @user.avatar %>" class="call-avatar">
+                <h4><%= @user.first_name %> <%= @user.last_name %></h4>
+                <span>Connecting...</span>
+            </div>
+            
+            <div class="call-items">
+                <a href="javascript:void(0);" class="btn call-item"><i class="material-icons">mic</i></a>
+                <a href="javascript:void(0);" class="btn call-item"><i class="material-icons">videocam</i></a>
+                <a href="apps-chat" class="btn call-item call-end"><i class="material-icons vcend">call_end</i></a>
+                <a href="javascript:void(0);" class="btn call-item"><i class="material-icons">person_add</i></a>
+                <a href="javascript:void(0);" class="btn call-item"><i class="material-icons">volume_up</i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% elsif @incoming %>
+
+
+<div class="call-box incoming-box">
+    <div class="call-wrapper">
+        <div class="call-inner">
+            <div class="call-user">
+                <img class="call-avatar" src="assets/img/profiles/avatar-11.jpg" alt="">
+                <h4>Wilmer Deluna</h4>
+                <span>Calling ...</span>
+            </div>
+            <div class="call-items">
+                <a href="apps-chat" class="btn call-item call-end"><i class="material-icons">call_end</i></a>
+                <a href="video_call" class="btn call-item call-start"><i class="material-icons">call</i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% else %>
+
+<div class="chat-main-wrapper">
+
+     <div class="col-lg-9 message-view task-view bg-dark text-light">
+        <div class="fixed-header">
+            <div class="navbar">
+                <div class="user-details me-auto">
+                    <div class="float-start user-img">
+                        <a class="avatar" href="#">
+                            <% if @single_room %>
+                                <img src="<%= @employee&.avatar || "https://limmy.sgp1.digitaloceanspaces.com/user.jpg" %>" width="38" height="38" alt="">
+                            <% end %>
+                        </a>
+                    </div>
+                    <div class="user-info float-start">
+                        <a href="#">
+                            <span>
+                                <% if @single_room %>
+                                    <%= @employee&.first_name || @single_room.name %> <%= @employee&.last_name || "" %>
+                                <% end %>
+                            </span>
+                        </a>
+                        
+                    </div>
+                </div>
+                <% if @single_room %>
+                <div class="search-box">
+                    <div class="input-group input-group-sm">
+                        <input type="text" placeholder="Search" class="form-control">
+                        <button type="button" class="btn"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <% end %>
+                <ul class="nav custom-menu" style="display: ">
+                    <li class="nav-item">
+                        <a class="nav-link task-chat profile-rightbar float-end" id="task_chat" href="#task_window"><i class="fa fa-user"></i></a>
+                    </li>
+                    <% if @employee %>
+                    <li class="nav-item">
+                        <a href="voice_call" class="nav-link"><i class="fa fa-phone"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="video/<%= SecureRandom.uuid %>" class="nav-link"><i class="fa fa-video-camera"></i></a>
+                    </li>
+                    <% end %>
+                    <% if @single_room %>
+                    <li class="nav-item dropdown dropdown-action">
+                        <a aria-expanded="false" data-bs-toggle="dropdown" class="nav-link dropdown-toggle" href=""><i class="fa fa-cog"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="javascript:void(0)" class="dropdown-item">Delete Conversations</a>
+                            <a href="javascript:void(0)" class="dropdown-item">Settings</a>
+                        </div>
+                    </li>
+                    <% end %>
+                </ul> 
+            </div>
+        </div>
+        <div id="chatboard">
+        <% if @single_room %>
+            <%= turbo_stream_from @single_room %>
+            <div id="messages" data-controller="scroll">
+                <%= turbo_frame_tag "page_handler" %>
+                <%= render "messages/pager", pagy: @pagy %>
+                <div id="messages-container">
+                    <%= render @messages %>
+                </div>
+            </div>
+                <%= render partial: 'layouts/new_message_form' %>
+        <% end %>
+        </div>
+    </div>
+
+    <div class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window">
+        <% if @single_room %>
+        <div class="chat-window video-window">
+            <div class="fixed-header">
+                <ul class="nav nav-tabs nav-tabs-bottom">
+                    <li class="nav-item"><a class="nav-link" href="#calls_tab" data-bs-toggle="tab">Calls</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#profile_tab" data-bs-toggle="tab">Profile</a></li>
+                </ul>
+            </div>
+            <div class="tab-content chat-contents">
+                
+                <div class="content-full tab-pane" id="calls_tab">
+                    <div class="chat-wrap-inner">
+                        <div class="chat-box">
+                            <div class="chats">
+                                <div class="chat chat-left">
+                                    <div class="chat-avatar">
+                                        <a href="profile" class="avatar">
+                                            <img alt="" src="https://smarthr-ci.dreamguystech.com/template/blue/public/assets/img/profiles/avatar-02.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-bubble">
+                                            <div class="chat-content">
+                                                <span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
+                                                <div class="call-details">
+                                                    <i class="material-icons">phone_missed</i>
+                                                    <div class="call-info">
+                                                        <div class="call-user-details">
+                                                            <span class="call-description">Jeffrey Warden missed the call</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat chat-left">
+                                    <div class="chat-avatar">
+                                        <a href="profile" class="avatar">
+                                            <img alt="" src="https://smarthr-ci.dreamguystech.com/template/blue/public/assets/img/profiles/avatar-02.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-bubble">
+                                            <div class="chat-content">
+                                                <span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
+                                                <div class="call-details">
+                                                    <i class="material-icons">call_end</i>
+                                                    <div class="call-info">
+                                                        <div class="call-user-details"><span class="call-description">This call has ended</span></div>
+                                                        <div class="call-timing">Duration: <strong>5 min 57 sec</strong></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-line">
+                                    <span class="chat-date">January 29th, 2019</span>
+                                </div>
+                                <div class="chat chat-left">
+                                    <div class="chat-avatar">
+                                        <a href="profile" class="avatar">
+                                            <img alt="" src="https://smarthr-ci.dreamguystech.com/template/blue/public/assets/img/profiles/avatar-05.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-bubble">
+                                            <div class="chat-content">
+                                                <span class="task-chat-user">Richard Miles</span> <span class="chat-time">8:35 am</span>
+                                                <div class="call-details">
+                                                    <i class="material-icons">phone_missed</i>
+                                                    <div class="call-info">
+                                                        <div class="call-user-details">
+                                                            <span class="call-description">You missed the call</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat chat-left">
+                                    <div class="chat-avatar">
+                                        <a href="profile" class="avatar">
+                                            <img alt="" src="https://smarthr-ci.dreamguystech.com/template/blue/public/assets/img/profiles/avatar-02.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-bubble">
+                                            <div class="chat-content">
+                                                <span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
+                                                <div class="call-details">
+                                                    <i class="material-icons">ring_volume</i>
+                                                    <div class="call-info">
+                                                        <div class="call-user-details">
+                                                            <a href="#" class="call-description call-description--linked" data-qa="call_attachment_link">Calling John Smith ...</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-full tab-pane show active" id="profile_tab">
+                    <div class="display-table">
+                        <div class="table-row">
+                            <div class="table-body">
+                                <div class="table-content">
+                                    <div class="chat-profile-img">
+                                        <div class="edit-profile-img">
+                                        <% if @single_room %>
+                                            <img src="<%= @current_user&.avatar || "https://limmy.sgp1.digitaloceanspaces.com/user.jpg" %>" alt="">
+                                        <% end %>
+                                            <span class="change-img">Change Image</span>
+                                        </div>
+                                        <h3 class="user-name m-t-10 mb-0"><%= @current_user&.first_name + " " + @current_user.last_name %></h3>
+                                        <small class="text-muted"><%= @current_user&.designation %></small>
+                                        <a href="javascript:void(0);" class="btn btn-primary edit-btn"><i class="fa fa-pencil"></i></a>
+                                    </div>
+                                    <div class="chat-profile-info">
+                                        <ul class="user-det-list">
+                                            <li>
+                                                <span>Username:</span>
+                                                <span class="float-end text-muted"><%= @current_user.username %></span>
+                                            </li>
+                                            <li>
+                                                <span>Join Date:</span>
+                                                <span class="float-end text-muted"><%= @current_user.join_date.to_time.strftime('%F') %></span>
+                                            </li>
+                                            <li>
+                                                <span>Email:</span>
+                                                <span class="float-end text-muted"><%= @current_user.email %></span>
+                                            </li>
+                                            <li>
+                                                <span>Phone:</span>
+                                                <span class="float-end text-muted"><%= @current_user.phone %></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="transfer-files">
+                                        <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-0">
+                                            <li class="nav-item"><a class="nav-link active" href="#all_files" data-bs-toggle="tab">All Files</a></li>
+                                            <li class="nav-item"><a class="nav-link" href="#my_files" data-bs-toggle="tab">My Files</a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane show active" id="all_files">
+                                                <ul class="files-list">
+                                                    <li>
+                                                        <div class="files-cont">
+                                                            <div class="file-type">
+                                                                <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                                                            </div>
+                                                            <div class="files-info">
+                                                                <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                                                                <span class="file-author"><a href="#">Loren Gatlin</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                                                            </div>
+                                                            <ul class="files-action">
+                                                                <li class="dropdown dropdown-action">
+                                                                    <a href="" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="javascript:void(0)">Download</a>
+                                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#share_files">Share</a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane" id="my_files">
+                                                <ul class="files-list">
+                                                    <li>
+                                                        <div class="files-cont">
+                                                            <div class="file-type">
+                                                                <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                                                            </div>
+                                                            <div class="files-info">
+                                                                <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                                                                <span class="file-author"><a href="#">John Doe</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                                                            </div>
+                                                            <ul class="files-action">
+                                                                <li class="dropdown dropdown-action">
+                                                                    <a href="" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="javascript:void(0)">Download</a>
+                                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#share_files">Share</a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% end %>
+    </div>
+
+</div>
+
+<% end %>

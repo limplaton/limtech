@@ -1,0 +1,38 @@
+<% if @single_room && @single_room.participants?(@single_room, employee) %>
+    <% isActive = 'active' %>
+<% else %>
+    <% isActive = '' %>
+<% end %> 
+
+<%
+=begin%>
+ <a href="/employees/<%= employee.id %>" data-turbo="false">
+    <span class="chat-avatar-sm user-img">
+        <img class="rounded-circle" width="30" height="30" alt="" src="<%= employee&.avatar || "https://limmy.sgp1.digitaloceanspaces.com/user.jpg" %>"><%= render "employees/status", employee: employee %>
+    </span>
+    <%= turbo_stream_from 'employee_status' %>
+    <span class="chat-user"><%= employee.first_name + " " + employee.last_name %></span> <span class="badge rounded-pill bg-danger">1</span>
+</a> 
+<%
+=end%>
+
+<div class="user">
+    <span class="chat-avatar-sm user-img">
+        <img class="rounded-circle" width="30" height="30" alt="" src="<%= employee&.avatar || "https://limmy.sgp1.digitaloceanspaces.com/user.jpg" %>">
+        <%= turbo_stream_from 'employee_status' %>
+        <%= render "employees/status", employee: employee %>
+    </span>
+    <li>
+        <a data-turbo="false" href="/employees/<%= employee.id %>" class="sidechat" style="width: 135px;margin-right: 0;display: inline-block;padding: 8px 0px 0px 0px;">
+            <span class="chat-user"><%= employee.first_name + " " + employee.last_name %></span>
+        </a>
+
+        <span class="badge rounded-pill bg-danger">1</span>
+
+        <%= turbo_frame_tag [dom_id(room), "user_last_message"] do %>
+        <%= render "employees/last_message", 
+            last_message: last_message, 
+            sender: sender %>
+        <% end %>
+    </li>
+</div>

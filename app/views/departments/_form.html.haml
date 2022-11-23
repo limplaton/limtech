@@ -1,0 +1,12 @@
+= form_for @department do |f|
+  .field
+    = f.label :name, :class => "control-label"
+    = f.text_field :name, :class => "form-control"
+  %div{:style => "color: red"}
+    - if department.errors.include? (:name)
+      - department.errors.full_messages_for(:name).each do |error_message|
+        = error_message
+        \
+  .form-group
+    .col-sm-offset-2.col-sm-10.py-2
+      %input.btn.btn-success{:type => "submit", :value => "Save"}/
