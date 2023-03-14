@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: limtech_production
-  username: deploy
+  username: root
   password: <%= ENV["LIMTECH_DATABASE_PASSWORD"] %>
